@@ -1,0 +1,150 @@
+<template name="products">
+ <div class="row">
+    <div class="col-md-9">
+        <h1 class="mb-3">Products</h1>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-primary js-redirect-create-product-route">Create</button>
+    </div>
+    <div class="col-md-12 mt-5">
+        <div class="d-flex flex-wrap">
+          {{#if Template.subscriptionsReady}} 
+              {{#each products}}
+              <div class="p-2 bd-highlight">
+                <div class="card mb-3" style="max-width: 500px; max-height: 300px;">
+                    <div class="row no-gutters">
+                      <div class="col-md-6">
+                        <img src="/img/productsample.png" alt="Product" style="width: 128px; height: 128px;">
+                      </div>
+                      <div class="col-md-6">
+                        <div class="card-body">
+                          <h5 class="card-title">{{productName}}</h5>
+                          <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div> 
+              {{else}}
+                  <h3 class="p-5">No Products ...</h3>
+              {{/each}}
+            {{else}}
+                {{> contextLoading}}
+            {{/if}}  
+        </div>
+    </div>
+</div>
+<!-- Product Modal -->
+
+   <!-- User Modal -->
+   <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create New</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-8">
+              <form>
+                <!-- <div class="form-group">
+                    <label class="col-form-label">Role</label>
+                    <select class="form-control js-role">
+                      {{#each userRolesHelper}}
+                        <option value="{{role}}">{{text}}</option>
+                      {{/each}}
+                    </select>
+                  </div> -->
+                <div class="form-group">
+                    <label class="col-form-label">Product Name</label>
+                    <input type="text" class="form-control js-productName" required>
+                </div>
+                <label class="col-form-label">Product Type</label>
+                <select class="form-control js-productType">
+                  {{#each productTypeHelper}}
+                    <option value="{{this}}">{{this}}</option>
+                  {{/each}}
+                </select>
+                <div class="form-group">
+                    <label class="col-form-label">Sales Price</label>
+                    <input type="text" class="form-control js-productSalesPrice" required>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Cost</label>
+                  <input type="text" class="form-control js-productCost" required>
+                </div>
+                <label class="col-form-label">Product Category</label>
+                <select class="form-control js-productCategory">
+                  {{#each productCategoryHelper}}
+                    <option value="{{this}}">{{this}}</option>
+                  {{/each}}
+                </select>
+                <div class="form-group">
+                  <label class="col-form-label">Internal Reference</label>
+                  <input type="text" class="form-control js-internalReference" required>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Internal Notes</label>
+                  <textarea class="form-control js-internal-notes" rows="3"></textarea>
+                </div>
+                <label class="col-form-label">Unit Of Measure</label>
+                <select class="form-control js-productUOM">
+                  {{#each productUOMHelper}}
+                    <option value="{{this}}">{{this}}</option>
+                  {{/each}}
+                </select>
+                <div class="form-group">
+                  <label class="col-form-label">Volume Per UOM(Unit Of Measure)</label>
+                  <input type="text" class="form-control js-productVolumePerUOM" required>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+              </form>
+            </div>
+            <div class="col-4">
+              <div class="p-2 m-2">
+                <img src="/img/productsample.png" class="img-thumbnail" alt="Product Image">
+              </div>
+              <div class="p-2 bg-light">
+                <h3>Log notes</h3>
+                <br>
+                <br>
+                <br>
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary js-create-product">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="new_product">
+    <div class="row">
+        <div class="col-md-9">
+            <h1>Products / <b>{{productName}}</b></h1>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-secondary js-go-back-products-route">Back</button>
+        </div>
+        <div class="col-md-12 mt-5">
+        </div>
+    </div>
+</template>

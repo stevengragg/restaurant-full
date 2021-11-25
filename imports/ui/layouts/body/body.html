@@ -1,0 +1,113 @@
+<template name="wigglerLayout">
+  <div class="main">
+    {{#if loggingIn}}
+      {{>appLoading}}
+    {{else}}
+    {{> header}}
+    <br>
+    <div class="container">
+        <div class="content-bg">
+          {{> Template.dynamic template=main}}
+        </div>
+    </div>
+    {{/if}}
+  </div>
+  
+</template>
+
+
+<template name="header">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #BBF3F3;">
+    <a class="navbar-brand ml-5" href="{{pathFor 'home'}}">
+      <b>RMS</b>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#appnavbar" aria-controls="appnavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="appnavbar">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item {{#if isHomeActive}}active{{/if}} highlight mr-auto">
+          <a class="nav-link" href="{{pathFor 'home'}}">{{#if currentUser}} Dashboard{{else}} Home{{/if}} </a>
+        </li>
+        {{#if currentUser}}
+        <!-- <li class="nav-item {{#if isInventoryActive}}active{{/if}} mr-auto ">
+          <a class="nav-link" href="{{pathFor 'inventory'}}"> Inventory</a>
+        </li> -->
+        <!-- <li class="nav-item {{#if isSupplierActive}}active{{/if}} mr-auto ">
+          <a class="nav-link" href="{{pathFor 'supplier'}}"> Supplier</a>
+        </li> -->
+        <li class="nav-item dropdown {{#if isOperationsActive}}active{{/if}}">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> Operations</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{pathFor 'transfers'}}"> Transfers</a>
+            {{#if isAdmin}}
+            <a class="dropdown-item" href="{{pathFor 'inventory-adjustments'}}"> Inventory Adjustments</a>
+            {{/if}}
+          </div>
+        </li>
+        <li class="nav-item {{#if isProductsActive}}active{{/if}} mr-auto ">
+          <a class="nav-link" href="{{pathFor 'products'}}"> Products</a>
+        </li>
+        {{#if isAdmin}}
+        <li class="nav-item dropdown {{#if isConfigurationsActive}}active{{/if}}">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> Configurations</a>
+          <div class="dropdown-menu">
+            <h6 class="dropdown-header"> User Management</h6>
+            <a class="dropdown-item" href="{{pathFor 'users'}}"> System Users</a>
+            <a class="dropdown-item" href="{{pathFor 'vendors'}}"> Vendor Contacts</a>
+            <h6 class="dropdown-header"> Warehouse Management</h6>
+            <a class="dropdown-item" href="{{pathFor 'warehouses'}}"> Warehouses</a>
+          </div>
+        </li>  
+        {{/if}}   
+        {{else}}
+        <!-- <li class="nav-item mr-auto ">
+          <a class="nav-link" href="#"> About</a>
+        </li>
+        <li class="nav-item mr-auto ">
+          <a class="nav-link" href="#"> Services</a>
+        </li> -->
+        {{/if}}
+      </ul>
+      <ul class="navbar-nav ml-auto mr-5">
+        {{#if currentUser}}
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><b>{{currentUser.profile.firstName}}</b></a>
+          <div class="dropdown-menu">   
+            <a class="nav-link js-app-account" href="#"> 
+              <small> My Account</small> 
+            </a>
+            <a class="nav-link js-app-logout" href="#"> 
+              <small> Logout</small> 
+            </a>
+          </div>
+        </li>
+        {{else}}
+        <li class="nav-item active">
+          <a class="nav-link" href="{{pathFor 'signin'}}"> 
+            <b>Sign In</b> 
+          </a>
+        </li> 
+        {{/if}}       
+      </ul>
+    </div>
+  </nav>
+</template>
+
+<template name="appLoading">
+<div class="mt-5 pt-5 text-center">
+  <div class="px-5">
+    <img src="/icons/cutlery.png" alt="Wiggler logo" class="mx-auto d-block w-25 h-25">
+  </div>
+  <div class="mt-5">
+    <h1><b>Loading ...</b></h1>
+  </div>
+</div>
+</template>
+
+<template name="contextLoading">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</template>

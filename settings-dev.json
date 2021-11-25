@@ -1,0 +1,14 @@
+{
+    "public": {
+        "wglr": {
+            "product": "wiggler",
+            "admins": [
+                "5yKmBYSaQxv5ud7Pw",
+                "va4ZEcwhyFYuZMAtY"
+            ],
+            "production": false,
+            "staging": true
+        }
+    },
+    "MONGO_URL": "xxxxx"
+}

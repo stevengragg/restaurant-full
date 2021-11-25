@@ -1,0 +1,112 @@
+<template name="vendors">
+    <div class="row">
+        <div class="col-md-10">
+            <h1 class="mb-3">Vendors Contact</h1>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary js-open-create-vendor-modal">Create</button>
+        </div>
+        <div class="col-md-12 mt-5">
+            <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Type</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {{#if Template.subscriptionsReady}}
+                        {{#each vendorContacts}}
+                            <tr>
+                                <th>{{name}}</th>
+                                <td>{{email}}</td>
+                                <td>{{type}}</td>
+                                <td id="{{_id}}" class="js-remove-vendor" title="Remove Vendor Contact"><i class="fas fa-trash"></i></td>
+                                <td id="{{_id}}" class="js-view-vendor" title="View Vendor Contact"><i class="fas fa-eye"></i></td>
+                            </tr>
+                        {{else}}
+                        <h3 class="p-5">No Vendors ...</h3>
+                        {{/each}}
+                    {{else}}
+                            {{> contextLoading}}
+                    {{/if}}
+                </tbody>
+              </table>
+        </div>
+    </div>
+    <!-- Vendor Contact Modal -->
+    <div class="modal fade" id="vendorsModal" tabindex="-1" aria-labelledby="vendorsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{{#if isViewingVendor}}View{{else}}Create New{{/if}}  Vendor Contact</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                {{#if isViewingVendor}}
+                  {{#each showVendor isViewingVendor}}
+                  <div class="form-group">
+                    <label class="col-form-label">Type</label>
+                    <p><b>{{type}}</b></p>
+                    <label class="col-form-label">Name</label>
+                    <p><b>{{name}}</b></p>
+                    <label class="col-form-label">Address</label>
+                    <p><b>{{address}}</b></p>
+                    <label class="col-form-label">Mobile</label>
+                    <p><b>{{mobile}}</b></p>
+                    <label class="col-form-label">Email</label>
+                    <p><b>{{email}}</b></p>
+                    <label class="col-form-label">Internal Notes</label>
+                    <p><b>{{internalNotes}}</b></p>
+                  </div>
+                  {{/each}}
+                {{else}}
+                <div class="form-group">
+                    <label class="col-form-label">Type</label>
+                    <select class="form-control js-type">
+                      {{#each vendorContactTypeHelper}}
+                        <option value="{{type}}">{{text}}</option>
+                      {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Name</label>
+                    <input type="text" class="form-control js-name" required>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Address</label>
+                    <textarea class="form-control js-address" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Email</label>
+                  <input type="email" class="form-control js-email" required>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Mobile</label>
+                    <input type="text" class="form-control js-mobile" required>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Internal Notes</label>
+                    <textarea class="form-control js-internal-notes" rows="3"></textarea>
+                </div>
+                {{/if}}
+              </form>
+            </div>
+            <div class="modal-footer">
+                {{#if isViewingVendor}}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                {{else}}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary js-create-vendor-contact">Create</button>
+                {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+</template>

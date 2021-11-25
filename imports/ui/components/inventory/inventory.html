@@ -1,0 +1,59 @@
+<template name="inventory">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Inventory</h1>
+        </div>
+        <div class="col-md-6">
+            <div class="form-row">
+                <div class="col">
+                    <label for="itemName">Item Name</label>
+                    <input type="text" class="form-control" id="itemName">
+                </div>
+                <div class="col">
+                    <label for="quantity">Quantity</label>
+                    <select class="form-control" id="quantity">
+                        {{#each quantities}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="uom">Unit of measurement</label>
+                    <select class="form-control" id="uom">
+                        {{#each uom}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+              </div>
+              <div class="form-row mt-3">
+                <button type="button" class="btn btn-info js-add-item">Add Item</button>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Unit of Measurement</th>
+                    <th scope="col">Date Added</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {{#each items}}
+                        <tr>
+                            <th>{{itemName}}</th>
+                            <td>{{quantity}}</td>
+                            <td>{{unitOfMeasure}}</td>
+                            <td>{{addedAt}}</td>
+                        </tr>
+                    {{else}}
+                    <h3>No items ...</h3>
+                    {{/each}}
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+</template>
