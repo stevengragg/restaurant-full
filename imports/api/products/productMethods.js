@@ -24,20 +24,26 @@ Meteor.methods({
   // Create a product contact
 
   productCreate(data) {
-    console.log("productCreate: started", data);
+    const user = Meteor.userId();
+    if (!user) throw new Meteor.Error(notloggedIn.title, notloggedIn.title);
+    console.log("productCreate: started", { user, data });
     check(data.productName, String);
     check(data.productType, String);
-    check(data.productSalesPrice, String);
-    check(data.productCost, String);
+    check(data.productSalesPrice, Number);
+    check(data.productCost, Number);
     check(data.productCategory, String);
     check(data.internalReference, String);
     check(data.internalNotes, String);
-    check(data.productUnitQuantity, String);
+    // check(data.productUnitQuantity, String);
     check(data.productUOM, String);
-    check(data.productVolumePerUOM, Number);
+    check(data.productVolume, Number);
 
     const result = Products.insert({
-      data,
+      ...data,
+      inventoryQuantity: 0,
+      createdAt: new Date().toISOString(),
+      lastUpdated: new Date().toISOString(),
+      createdBy: user,
     });
 
     console.log("productCreate: ended", { result });
@@ -49,11 +55,31 @@ Meteor.methods({
   // Remove a vendor contact
 
   productRemove(data) {
-    console.log("productRemove: started", data);
     const user = Meteor.userId();
     if (!user) throw new Meteor.Error(notloggedIn.title, notloggedIn.title);
+    console.log("productRemove: started", { user, data });
+
     check(data.productId, String);
     const vendorRemoved = Products.remove({ _id: data.productId });
     console.log("productRemove: ended", { data, vendorRemoved });
+    return {
+      success: result === true,
+      vendorRemoved,
+    };
+  },
+  //Update any fields of the product
+
+  productUpdate(productId, data) {
+    const user = Meteor.userId();
+    if (!user) throw new Meteor.Error(notloggedIn.title, notloggedIn.title);
+    console.log("productUpdate: started", { user, data, productId });
+    check(data, Object);
+    check(productId, String);
+    const updateProduct = Products.update({ _id: productId }, { $set: data });
+    console.log("productUpdate: ended", { data, productId, updateProduct });
+    return {
+      success: updateProduct === true,
+      updateProduct,
+    };
   },
 });

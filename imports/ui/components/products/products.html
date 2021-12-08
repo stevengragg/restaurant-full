@@ -1,6 +1,5 @@
 <template name="products">
- <div class="row">
-   
+ <div class="row"> 
     <div class="col-md-9">
         <h1 class="mb-3">Products</h1>
     </div>
@@ -11,17 +10,22 @@
         <div class="d-flex flex-wrap">
           {{#if Template.subscriptionsReady}} 
               {{#each products}}
-              <div class="p-2 bd-highlight">
-                <div class="card mb-3" style="max-width: 500px; max-height: 300px;">
+              <div class="p-2 js-view-product touch">
+                <div class="card mb-3 text-truncate" style="width: 400px; height: 200px;">
                     <div class="row no-gutters">
-                      <div class="col-md-6">
-                        <img src="/img/productsample.png" alt="Product" style="width: 128px; height: 128px;">
+                      <div class="col-md-4">
+                        <img src="/img/productsample.png" class="img-thumbnail" alt="Product">
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-8">
                         <div class="card-body">
-                          <h5 class="card-title">{{productName}}</h5>
-                          <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                          <h5 class="card-title text">{{productName}}</h5>
+                          <small>
+                            <p class="card-text">Product Type: <b>{{productType}}</b></p>
+                          <p class="card-text">Product Category: <b>{{productCategory}}</b></p>
+                          <p class="card-text">Created By: <b>{{getUser createdBy}}</b></p>
+                          <p class="card-text">Created At: <b>{{fromNow createdAt}}</b></p>
+                          </small>
+                          
                         </div>
                       </div>
                     </div>
@@ -40,7 +44,7 @@
 
    <!-- User Modal -->
    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Create New</h5>
@@ -50,7 +54,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-8">
+            <div class="col-12">
               <form>
                 <!-- <div class="form-group">
                     <label class="col-form-label">Role</label>
@@ -99,32 +103,15 @@
                   {{/each}}
                 </select>
                 <div class="form-group">
-                  <label class="col-form-label">Volume Per UOM(Unit Of Measure)</label>
-                  <input type="text" class="form-control js-productVolumePerUOM" required>
+                  <label class="col-form-label">Volume(per UOM)</label>
+                  <input type="text" class="form-control js-volume" required>
                 </div>
                 <br>
                 <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+
               </form>
             </div>
-            <div class="col-4">
-              <div class="p-2 m-2">
-                <img src="/img/productsample.png" class="img-thumbnail" alt="Product Image">
-              </div>
-              <div class="p-2 bg-light">
-                <h3>Log notes</h3>
-                <br>
-                <br>
-                <br>
-              </div>
-              
-            </div>
+            
           </div>
           
         </div>
@@ -137,15 +124,119 @@
   </div>
 </template>
 
-<template name="new_product">
+<template name="product">
     <div class="row">
-        <div class="col-md-9">
-            <h1>Products / <b>{{productName}}</b></h1>
+      {{#if Template.subscriptionsReady}} 
+        <div class="col-md-10">
+             {{#unless isEditing "productName"}} <h1><u class="js-edit-productName"><b>{{product.productName}}</b></u></h1>{{else}} {{> productFieldUpdate type="text" doc=this key="productName" label="Product Name" value=product.productName server="productUpdate"}}
+                 {{/unless}}
+            
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <button class="btn btn-secondary js-go-back-products-route">Back</button>
         </div>
-        <div class="col-md-12 mt-5">
+        <div class="col-md-8 mt-5">
+          <h5 class="d-flex"> <img src="/icons/user.png" alt="Wiggler logo" class="user-temp"> <div class="pl-2 mt-1">{{getUser product.createdBy}}(creator)</div></h5>
+          <div class="d-flex pr-5">
+            <div class="p-3 mt-3"><i><small>Last updated: {{fromNow product.lastUpdated}}</small></i></div>
+            <div class="p-3 mt-3"><i><small>Created At: {{fromNow product.createdAt}}</small></i></div>
+          </div>      
+
+          <div class="p-2 bg-light">
+          {{#unless isEditing "productType"}}
+            <p class="js-edit-productType">Product Type: <b>{{product.productType}}</b></p>
+          {{else}}
+          {{> productFieldUpdate type="select" doc=this key="productType" label="Product Type" value=product.productType options=productTypeHelper server="productUpdate"}}
+          {{/unless}}
+          </div>
+          <div class="p-2 bg-light mt-2">
+            {{#unless isEditing "productSalesPrice"}}
+              <p class="js-edit-productSalesPrice">Sales Price: <b>{{product.productSalesPrice}}</b></p>
+            {{else}}
+            {{> productFieldUpdate type="text" doc=this key="productSalesPrice" label="Sales Price" value=product.productSalesPrice server="productUpdate"}}
+            {{/unless}}
+          </div>
+          <div class="p-2 bg-light mt-2">
+            {{#unless isEditing "productCost"}}
+              <p class="js-edit-productCost">Cost: <b>{{product.productCost}}</b></p>
+            {{else}}
+            {{> productFieldUpdate type="text" doc=this key="productCost" label="Cost" value=product.productCost server="productUpdate"}}
+            {{/unless}}
+          </div>
+          <div class="p-2 bg-light mt-2">
+            {{#unless isEditing "productCategory"}}
+              <p class="js-edit-productCategory">Product Category: <b>{{product.productCategory}}</b></p>
+            {{else}}
+            {{> productFieldUpdate type="select" doc=this key="productCategory" label="Product Category" value=product.productCategory options=productCategoryHelper server="productUpdate"}}
+            {{/unless}}
+          </div>
+          <div class="p-2 bg-light mt-2">
+            {{#unless isEditing "internalReference"}}
+              <p class="js-edit-internalReference">Internal Reference: <b>{{product.internalReference}}</b></p>
+            {{else}}
+            {{> productFieldUpdate type="text" doc=this key="internalReference" label="Internal Reference" value=product.internalReference server="productUpdate"}}
+            {{/unless}}
+          </div>
+          <div class="p-2 bg-light mt-2">
+            {{#unless isEditing "internalNotes"}}
+              <p class="js-edit-internalNotes">Internal Notes: <b>{{product.internalNotes}}</b></p>
+            {{else}}
+            {{> productFieldUpdate type="textarea" doc=this key="internalNotes" label="Internal Notes" value=product.internalNotes server="productUpdate"}}
+            {{/unless}}
+          </div>
+          <div class="p-2 bg-light mt-2">
+            {{#unless isEditing "productUOM"}}
+              <p class="js-edit-productUOM">Unit Of Measure: <b>{{product.productUOM}}</b></p>
+            {{else}}
+            {{> productFieldUpdate type="select" doc=this key="productUOM" label=">Unit Of Measure" value=product.productUOM options=productUOMHelper server="productUpdate"}}
+            {{/unless}}
+          </div>
+          <div class="p-2 bg-light mt-2">
+            {{#unless isEditing "productVolume"}}
+              <p class="js-edit-productVolume">Volume(per UOM): <b>{{product.productVolume}}</b></p>
+            {{else}}
+            {{> productFieldUpdate type="text" doc=this key="productVolume" label="Volume(per UOM)" value=product.productVolume server="productUpdate"}}
+            {{/unless}}
+          </div>
+          <br>
+          <br>
         </div>
+        <div class="col-md-4 mt-5">
+          <div class="mb-5">
+            <img src="/img/productsample.png" class="img-thumbnail w-50 h-50" alt="Product Image">
+          </div>
+          <div class="p-2 bg-light">
+            <h3>Log notes</h3>
+            <br>
+            <br>
+            <br>
+          </div>
+          
+        </div>
+        {{else}}
+          {{> contextLoading}}
+        {{/if}} 
     </div>
+</template>
+
+<template name="productFieldUpdate">
+  <div class="form-group {{#if state}}disabled{{/if}} touch">
+    {{#if dom type "input"}}
+        <input type="text" class="form-control js-field" value={{value}} placeholder="{{label}}" disabled="{{#if state}}true{{/if}}">
+    {{/if}}
+    {{#if dom type "textarea"}}
+        <label>{{label}}</label>
+        <textarea class="form-control js-field" disabled="{{#if state}}true{{/if}}" rows="3">{{value}}</textarea>
+    {{/if}}
+    {{#if dom type "select"}}
+        <label>{{label}}</label>
+        <select class="form-control js-field" disabled="{{#if state}}true{{/if}}">
+          {{#each option in options}}
+            <option value="{{option}}" selected={{eq value option}}>{{option}}</option>
+          {{/each}}
+        </select>
+    {{/if}}
+    <span class="js-save"><small><u>save</u></small></span> | <span class="js-cancel"><small><u>cancel</u></small></span>
+    <small>{{message}}</small>
+  </div>
 </template>
