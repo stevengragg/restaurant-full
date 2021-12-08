@@ -217,14 +217,14 @@ Template.product.helpers({
   },
 });
 
-Template.productFieldUpdate.onCreated(function () {
+Template.fieldUpdate.onCreated(function () {
   this.getId = () => FlowRouter.getParam("_id");
   this.state = new ReactiveVar("");
   this.message = new ReactiveVar("");
   this.cancel = new ReactiveVar(false);
 });
 
-Template.productFieldUpdate.helpers({
+Template.fieldUpdate.helpers({
   state() {
     return Template.instance().state.get();
   },
@@ -245,7 +245,7 @@ Template.productFieldUpdate.helpers({
   },
 });
 
-Template.productFieldUpdate.events({
+Template.fieldUpdate.events({
   "click .js-save"(e, instance) {
     const { doc, key, value, server } = this;
 

@@ -10,8 +10,8 @@
         <div class="d-flex flex-wrap">
           {{#if Template.subscriptionsReady}} 
               {{#each products}}
-              <div class="p-2 js-view-product touch">
-                <div class="card mb-3 text-truncate" style="width: 400px; height: 200px;">
+              <div class="p-2 js-view-product touch ">
+                <div class="card mb-3 text-wrap scroll-style overflow-auto" style="width: 300px; height: 300px;">
                     <div class="row no-gutters">
                       <div class="col-md-4">
                         <img src="/img/productsample.png" class="img-thumbnail" alt="Product">
@@ -120,7 +120,7 @@
     <div class="row">
       {{#if Template.subscriptionsReady}} 
         <div class="col-md-10">
-             {{#unless isEditing "productName"}} <h1><u class="js-edit-productName"><b>{{product.productName}}</b></u></h1>{{else}} {{> productFieldUpdate type="text" doc=this key="productName" label="Product Name" value=product.productName server="productUpdate"}}
+             {{#unless isEditing "productName"}} <h1><u class="js-edit-productName"><b>{{product.productName}}</b></u></h1>{{else}} {{> fieldUpdate type="text" doc=this key="productName" label="Product Name" value=product.productName server="productUpdate"}}
                  {{/unless}}
             
         </div>
@@ -138,56 +138,56 @@
           {{#unless isEditing "productType"}}
             <p class="js-edit-productType">Product Type: <b>{{product.productType}}</b></p>
           {{else}}
-          {{> productFieldUpdate type="select" doc=this key="productType" label="Product Type" value=product.productType options=productTypeHelper server="productUpdate"}}
+          {{> fieldUpdate type="select" doc=this key="productType" label="Product Type" value=product.productType options=productTypeHelper server="productUpdate"}}
           {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
             {{#unless isEditing "productSalesPrice"}}
               <p class="js-edit-productSalesPrice">Sales Price: <b>{{product.productSalesPrice}}</b></p>
             {{else}}
-            {{> productFieldUpdate type="text" doc=this key="productSalesPrice" label="Sales Price" value=product.productSalesPrice server="productUpdate"}}
+            {{> fieldUpdate type="text" doc=this key="productSalesPrice" label="Sales Price" value=product.productSalesPrice server="productUpdate"}}
             {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
             {{#unless isEditing "productCost"}}
               <p class="js-edit-productCost">Cost: <b>{{product.productCost}}</b></p>
             {{else}}
-            {{> productFieldUpdate type="text" doc=this key="productCost" label="Cost" value=product.productCost server="productUpdate"}}
+            {{> fieldUpdate type="text" doc=this key="productCost" label="Cost" value=product.productCost server="productUpdate"}}
             {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
             {{#unless isEditing "productCategory"}}
               <p class="js-edit-productCategory">Product Category: <b>{{product.productCategory}}</b></p>
             {{else}}
-            {{> productFieldUpdate type="select" doc=this key="productCategory" label="Product Category" value=product.productCategory options=productCategoryHelper server="productUpdate"}}
+            {{> fieldUpdate type="select" doc=this key="productCategory" label="Product Category" value=product.productCategory options=productCategoryHelper server="productUpdate"}}
             {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
             {{#unless isEditing "internalReference"}}
               <p class="js-edit-internalReference">Internal Reference: <b>{{product.internalReference}}</b></p>
             {{else}}
-            {{> productFieldUpdate type="text" doc=this key="internalReference" label="Internal Reference" value=product.internalReference server="productUpdate"}}
+            {{> fieldUpdate type="text" doc=this key="internalReference" label="Internal Reference" value=product.internalReference server="productUpdate"}}
             {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
             {{#unless isEditing "internalNotes"}}
               <p class="js-edit-internalNotes">Internal Notes: <b>{{product.internalNotes}}</b></p>
             {{else}}
-            {{> productFieldUpdate type="textarea" doc=this key="internalNotes" label="Internal Notes" value=product.internalNotes server="productUpdate"}}
+            {{> fieldUpdate type="textarea" doc=this key="internalNotes" label="Internal Notes" value=product.internalNotes server="productUpdate"}}
             {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
             {{#unless isEditing "productUOM"}}
               <p class="js-edit-productUOM">Unit Of Measure: <b>{{product.productUOM}}</b></p>
             {{else}}
-            {{> productFieldUpdate type="select" doc=this key="productUOM" label="Unit Of Measure" value=product.productUOM options=productUOMHelper server="productUpdate"}}
+            {{> fieldUpdate type="select" doc=this key="productUOM" label="Unit Of Measure" value=product.productUOM options=productUOMHelper server="productUpdate"}}
             {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
             {{#unless isEditing "productVolume"}}
               <p class="js-edit-productVolume">Volume(per UOM): <b>{{product.productVolume}}</b></p>
             {{else}}
-            {{> productFieldUpdate type="text" doc=this key="productVolume" label="Volume(per UOM)" value=product.productVolume server="productUpdate"}}
+            {{> fieldUpdate type="text" doc=this key="productVolume" label="Volume(per UOM)" value=product.productVolume server="productUpdate"}}
             {{/unless}}
           </div>
           <br>
@@ -211,7 +211,7 @@
     </div>
 </template>
 
-<template name="productFieldUpdate">
+<template name="fieldUpdate">
   <div class="form-group {{#if state}}disabled{{/if}} touch">
     {{#if dom type "input"}}
         <input type="text" class="form-control js-field" value={{value}} placeholder="{{label}}" disabled="{{#if state}}true{{/if}}">

@@ -5,3 +5,4 @@ import "./inventory-api.js";
 import "./vendor-api.js";
 import "./warehouse-api.js";
 import "./product-api.js";
+import "./transfer-api.js";
