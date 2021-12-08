@@ -1,1 +1,1 @@
-import './supplier.html'
+import "./supplier.html";

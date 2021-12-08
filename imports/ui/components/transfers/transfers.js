@@ -1,6 +1,5 @@
-import './transfers.html';
-
+import "./transfers.html";
 
 Template.transfers.onCreated(function () {
-    console.log('transfers')
-})
+  console.log("transfers");
+});
