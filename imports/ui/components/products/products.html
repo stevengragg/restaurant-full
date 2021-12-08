@@ -211,24 +211,3 @@
     </div>
 </template>
 
-<template name="fieldUpdate">
-  <div class="form-group {{#if state}}disabled{{/if}} touch">
-    {{#if dom type "input"}}
-        <input type="text" class="form-control js-field" value={{value}} placeholder="{{label}}" disabled="{{#if state}}true{{/if}}">
-    {{/if}}
-    {{#if dom type "textarea"}}
-        <label>{{label}}</label>
-        <textarea class="form-control js-field" disabled="{{#if state}}true{{/if}}" rows="3">{{value}}</textarea>
-    {{/if}}
-    {{#if dom type "select"}}
-        <label>{{label}}</label>
-        <select class="form-control js-field" disabled="{{#if state}}true{{/if}}">
-          {{#each option in options}}
-            <option value="{{option}}" selected={{eq value option}}>{{option}}</option>
-          {{/each}}
-        </select>
-    {{/if}}
-    <span class="js-save"><small><u>save</u></small></span> | <span class="js-cancel"><small><u>cancel</u></small></span>
-    <small>{{message}}</small>
-  </div>
-</template>

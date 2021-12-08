@@ -3,3 +3,4 @@ import "./routes.js";
 import "./authorization.js";
 import "./global-subscriptions.js";
 import "./global-helpers.js";
+import "./fieldUpdate.js";
