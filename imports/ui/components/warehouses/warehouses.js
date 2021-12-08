@@ -36,7 +36,7 @@ Template.warehouses.helpers({
 Template.warehouses.events({
   "click .js-open-create-warehouse-modal"(event, instance) {
     instance.isViewingWarehouse.set({ bool: false, warehouseId: "" });
-    window.$("#warehouseModal").modal("show");
+    $("#warehouseModal").modal("show");
   },
   "click .js-create-warehouse-contact"(event, target) {
     event.preventDefault();
@@ -57,7 +57,7 @@ Template.warehouses.events({
           alert(ise);
           return;
         } else {
-          window.$("#warehouseModal").modal("hide");
+          $("#warehouseModal").modal("hide");
         }
       }
     );
@@ -76,6 +76,6 @@ Template.warehouses.events({
   "click .js-view-warehouse"(event, instance) {
     console.log(this._id);
     instance.isViewingWarehouse.set({ bool: true, warehouseId: this._id });
-    window.$("#warehouseModal").modal("show");
+    $("#warehouseModal").modal("show");
   },
 });
