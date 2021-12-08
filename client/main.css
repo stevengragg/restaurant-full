@@ -29,3 +29,21 @@ td,
 th {
   cursor: pointer !important;
 }
+
+.touch {
+  cursor: pointer;
+}
+
+.disabled {
+  border: green !important;
+}
+
+.js-cancel,
+.js-save {
+  color: lightseagreen;
+}
+
+.user-temp {
+  width: 36px;
+  height: 36px;
+}

@@ -62,7 +62,7 @@ const route = (name) =>
 // Automatically detects changes on routes
 Tracker.autorun(() => {
   FlowRouter.watchPathChange();
-  console.log("FlowRouter route", {
+  console.log("RMS: route", {
     path: FlowRouter.current().path,
     params: FlowRouter.current().params,
     queryParams: FlowRouter.current().queryParams,
@@ -74,7 +74,6 @@ FlowRouter.route("/", {
   name: "home",
   action() {
     if (Meteor.userId()) {
-      console.log("logged in");
       FlowRouter.go("dashboard");
     } else {
       BlazeLayout.render("wigglerLayout", { main: "home" });
@@ -99,8 +98,13 @@ route("users"); // Users route
 route("vendors"); // Vendors route
 route("warehouses"); // Warehouses route
 // route('product-category') // Product Category route
-
-FlowRouter.route("/products/new-product", {
-  name: "new_product",
-  action: renderRouteName,
+FlowRouter.route("/products/product/:_id", {
+  name: "product",
+  action: () => {
+    if (!Meteor.userId()) {
+      FlowRouter.go("signin");
+      return;
+    }
+    renderRouteName();
+  },
 });
