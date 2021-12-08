@@ -1,2 +1,2 @@
-import '../../api/inventory/inventoryMethods.js';
-import '../../api/inventory/inventoryPublications';
+import "../../api/inventory/inventoryMethods.js";
+import "../../api/inventory/inventoryPublications";

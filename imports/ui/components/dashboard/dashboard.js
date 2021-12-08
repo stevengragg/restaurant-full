@@ -1,6 +1,5 @@
-import './dashboard.html';
-
+import "./dashboard.html";
 
 Template.dashboard.onCreated(function () {
-    console.log('dashboard')
-})
+  console.log("dashboard");
+});

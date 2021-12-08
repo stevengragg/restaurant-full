@@ -1,1 +1,5 @@
-Meteor.subscribe('user.currentUser')
+Tracker.autorun(() => {
+  if (Meteor.userId()) {
+    Meteor.subscribe("user.currentUser");
+  }
+});

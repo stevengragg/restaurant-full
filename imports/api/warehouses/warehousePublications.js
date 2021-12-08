@@ -1,8 +1,7 @@
-import {Warehouses} from '../database/wareHouseCollection';
+import { Warehouses } from "../database/wareHouseCollection";
 
-
-Meteor.publish('warehouse.getWarehouses', function () {
-    const userId = Meteor.userId();
-    if (!userId) return this.stop();
-    return Warehouses.find({});
+Meteor.publish("warehouse.getWarehouses", function () {
+  const userId = Meteor.userId();
+  if (!userId) return this.stop();
+  return Warehouses.find({});
 });

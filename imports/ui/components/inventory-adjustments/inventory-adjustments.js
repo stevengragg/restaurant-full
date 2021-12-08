@@ -1,6 +1,5 @@
-import './inventory-adjustments.html';
-
+import "./inventory-adjustments.html";
 
 Template.inventory_adjustments.onCreated(function () {
-    console.log('inventory_adjustments')
-})
+  console.log("inventory_adjustments");
+});

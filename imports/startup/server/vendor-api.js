@@ -1,2 +1,2 @@
-import '../../api/vendors/vendorMethods.js';
-import '../../api/vendors/vendorPublications.js';
+import "../../api/vendors/vendorMethods.js";
+import "../../api/vendors/vendorPublications.js";
