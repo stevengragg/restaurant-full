@@ -1,4 +1,5 @@
 import "./transfers.html";
+
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Transfers } from "../../../api/database/transfersCollection.js";
 import { Vendors } from "../../../api/database/vendorsCollection.js";
@@ -42,6 +43,7 @@ Template.transfers.helpers({
     return productUOM;
   },
 });
+
 Template.transfers.events({
   "click .js-create-transfer"() {
     $("#transferModal").modal("show");
