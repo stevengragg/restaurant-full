@@ -72,14 +72,18 @@ Template.transfers.events({
       return;
     }
     data = {
+      operationType,
       productId: target.find(".js-productId").value,
       demand: Number(target.find(".js-demand").value),
       sourceDocument: target.find(".js-sourceDocument").value,
       internalNotes: target.find(".js-internalNotes").value,
     };
-    let countOfReceipts = Transfers.find({ operationType }).count();
-    console.log(countOfReceipts);
+
     if (operationType === "Receipts") {
+      let countOfReceipts = Transfers.find({
+        operationType,
+        destinationLocation: target.find(".js-destinationLocation").value,
+      }).count();
       data.receiveFrom = target.find(".js-receiveFrom").value;
       data.destinationLocation = target.find(".js-destinationLocation").value;
       const { shortName } = Warehouses.findOne(
@@ -87,8 +91,14 @@ Template.transfers.events({
         { fields: { shortName: 1 } }
       );
       console.log(shortName);
-      transferCode = `${shortName}/IN/${countOfReceipts++}`;
+      countOfReceipts += 1;
+      console.log(countOfReceipts);
+      transferCode = `${shortName}/IN/${countOfReceipts}`;
     } else if (operationType === "Internal Delivery") {
+      let countOfReceipts = Transfers.find({
+        operationType,
+        sourceLocation: target.find(".js-sourceLocation").value,
+      }).count();
       data.deliveryTo = target.find(".js-deliveryTo").value;
       data.sourceLocation = target.find(".js-sourceLocation").value;
       const { shortName } = Warehouses.findOne(
@@ -96,7 +106,9 @@ Template.transfers.events({
         { fields: { shortName: 1 } }
       );
       console.log(shortName);
-      transferCode = `${shortName}/OUT/${countOfReceipts + 1}`;
+      countOfReceipts += 1;
+      console.log(countOfReceipts);
+      transferCode = `${shortName}/OUT/${countOfReceipts}`;
     }
     console.log(transferCode);
     data.transferCode = transferCode;
