@@ -4,6 +4,7 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Transfers } from "../../../api/database/transfersCollection.js";
 import { Vendors } from "../../../api/database/vendorsCollection.js";
 import { Warehouses } from "../../../api/database/wareHouseCollection";
+import { Products } from "../../../api/database/productsCollection";
 
 Template.transfers.onCreated(function () {
   console.log("transfers");
@@ -11,6 +12,9 @@ Template.transfers.onCreated(function () {
   this.isInternalDelivery = new ReactiveVar(false);
   this.autorun(() => {
     this.subscribe("transfer.getTransfers");
+    this.subscribe("product.getProducts");
+    this.subscribe("vendor.getVendors");
+    this.subscribe("warehouse.getWarehouses");
   });
 });
 
@@ -36,75 +40,54 @@ Template.transfers.helpers({
       { fields: { warehouseName: 1 } }
     );
   },
-  productCategoryHelper() {
-    return productCategory;
-  },
-  productUOMHelper() {
-    return productUOM;
+  products() {
+    return Products.find();
   },
 });
 
 Template.transfers.events({
-  "click .js-create-transfer"() {
+  "click .js-create-transfer-toggle-modal"() {
     $("#transferModal").modal("show");
   },
-  "click .js-create-product"(event, target) {
+  "click .js-create-transfer"(event, target) {
     event.preventDefault();
-    const productType = target.find(".js-productType").value;
-    const productName = target.find(".js-productName").value;
-    const productSalesPrice = Number(
-      target.find(".js-productSalesPrice").value
-    );
-    const productCost = Number(target.find(".js-productCost").value);
-    const productCategory = target.find(".js-productCategory").value;
-    const internalReference = target.find(".js-internalReference").value;
-    const internalNotes = target.find(".js-internal-notes").value;
-    // const productUnitQuantity = target.find(".js-internal-notes").value;
-    const productUOM = target.find(".js-productUOM").value;
-    const productVolume = Number(target.find(".js-volume").value);
-    const data = {
-      productType,
-      productName,
-      productSalesPrice,
-      productCost,
-      productCategory,
-      internalReference,
-      internalNotes,
-      // productUnitQuantity,
-      productUOM,
-      productVolume,
-    };
-    console.log("productObj", {
+    // const productType = target.find(".js-productType").value;
+    // const productSalesPrice = Number(
+    //   target.find(".js-productSalesPrice").value
+    // );
+
+    const data = {};
+    console.log("transferObj", {
       data,
     });
-    Meteor.call("productCreate", data, (err, res) => {
+    Meteor.call("transferCreate", data, (err, res) => {
       if (err) {
         alert(err.reason);
         return;
       }
       if (!res.success) {
-        alert("Internal Server Error: 4f03");
+        alert("Internal Server Error: 413e");
         return;
       } else {
-        $("#productModal").modal("hide");
+        $("#transferModal").modal("hide");
       }
     });
-    target.find(".js-productType").value = "";
-    target.find(".js-productName").value = "";
-    target.find(".js-productSalesPrice").value = "";
-    target.find(".js-productCost").value = "";
-    target.find(".js-productCategory").value = "";
-    target.find(".js-internalReference").value = "";
-    target.find(".js-internal-notes").value = "";
-    target.find(".js-internal-notes").value = "";
-    target.find(".js-productUOM").value = "";
-    target.find(".js-volume").value = "";
+    // target.find(".js-productType").value = "";
+    // target.find(".js-productName").value = "";
+    // target.find(".js-productSalesPrice").value = "";
+    // target.find(".js-productCost").value = "";
+    // target.find(".js-productCategory").value = "";
+    // target.find(".js-internalReference").value = "";
+    // target.find(".js-internal-notes").value = "";
+    // target.find(".js-internal-notes").value = "";
+    // target.find(".js-productUOM").value = "";
+    // target.find(".js-volume").value = "";
   },
-  "click .js-view-product"(e, event) {
+  "click .js-view-transfer"(e, event) {
     e.preventDefault();
     // TODO: View product
     console.log(this._id);
-    FlowRouter.go("product", { _id: this._id });
+    FlowRouter.go("transfer", { _id: this._id });
   },
 });
 

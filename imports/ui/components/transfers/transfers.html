@@ -4,12 +4,12 @@
       <h1 class="mb-3">Transfers</h1>
     </div>
     <div class="col-md-3">
-      <button class="btn btn-primary js-create-transfer">Create</button>
+      <button class="btn btn-primary js-create-transfer-toggle-modal">Create</button>
     </div>
     <div class="col-md-12 mt-5">
       <div class="d-flex flex-wrap">
         {{#if Template.subscriptionsReady}} {{#each transfers}}
-        <div class="p-2 js-view-product touch">
+        <div class="p-2 js-view-transfer touch">
           <div class="card mb-3 text-wrap scroll-style overflow-auto" style="width: 300px; height: 300px">
 
             <div class="row no-gutters">
@@ -52,6 +52,7 @@
               <form>
                 <label class="col-form-label">Operation Type</label>
                 <select class="form-control js-operationType">
+                  <option value="" selected="selected"></option>
                   <option value="Receipts">Receipts</option>
                   <option value="Internal Delivery">Internal Delivery</option>
                 </select>
