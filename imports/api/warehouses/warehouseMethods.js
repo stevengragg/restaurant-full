@@ -21,12 +21,22 @@ Meteor.methods({
   // Create a warehouse
 
   warehouseCreate(data) {
-    console.log("warehouseCreate: started", data);
+    const user = Meteor.userId();
+    if (!user) throw new Meteor.Error(notloggedIn.title, notloggedIn.title);
+    console.log("warehouseCreate: started", { data, user });
     check(data.warehouseName, String);
     check(data.shortName, String);
     check(data.address, String);
     check(data.type, String);
-
+    // const warehouse = Warehouses.findOne({
+    //   shortName: new RegExp(data.shortName),
+    // });
+    // if (warehouse) {
+    //   throw new Meteor.Error(
+    //     "warehouse-exists",
+    //     "Warehouse with that shortcode is already exists."
+    //   );
+    // }
     const result = Warehouses.insert({
       warehouseName: data.warehouseName,
       shortName: data.shortName,

@@ -24,7 +24,9 @@ Meteor.methods({
   // Create a vendor contact
 
   vendorCreate(data) {
-    console.log("vendorCreate: started", data);
+    const user = Meteor.userId();
+    if (!user) throw new Meteor.Error(notloggedIn.title, notloggedIn.title);
+    console.log("vendorCreate: started", { data, user });
     check(data.name, String);
     check(data.type, String);
     check(data.address, String);
@@ -49,9 +51,9 @@ Meteor.methods({
   // Remove a vendor contact
 
   vendorRemove(data) {
-    console.log("vendorRemove: started", data);
     const user = Meteor.userId();
     if (!user) throw new Meteor.Error(notloggedIn.title, notloggedIn.title);
+    console.log("vendorRemove: started", { data, user });
     check(data.vendorId, String);
     const vendorRemoved = Vendors.remove({ _id: data.vendorId });
     console.log("vendorRemove: ended", {

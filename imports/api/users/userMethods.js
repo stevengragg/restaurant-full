@@ -25,7 +25,9 @@ Meteor.methods({
   // Create a user
 
   userCreate(data) {
-    console.log("userCreate: started", data);
+    const user = Meteor.userId();
+    if (!user) throw new Meteor.Error(notloggedIn.title, notloggedIn.title);
+    console.log("userCreate: started", { data, user });
     check(data.email, String);
     check(data.password, String);
     check(data.firstName, String);
