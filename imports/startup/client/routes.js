@@ -108,3 +108,14 @@ FlowRouter.route("/products/product/:_id", {
     renderRouteName();
   },
 });
+
+FlowRouter.route("/transfers/transfer/:_id", {
+  name: "transfer",
+  action: () => {
+    if (!Meteor.userId()) {
+      FlowRouter.go("signin");
+      return;
+    }
+    renderRouteName();
+  },
+});

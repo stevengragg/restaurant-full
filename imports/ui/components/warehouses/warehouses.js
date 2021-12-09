@@ -44,10 +44,11 @@ Template.warehouses.events({
     const warehouseName = target.find(".js-warehouse-name").value;
     const shortName = target.find(".js-warehouse-short-name").value;
     const address = target.find(".js-address").value;
+    const type = target.find(".js-type").value;
     console.log("warehouseObj", { warehouseName, shortName, address });
     Meteor.call(
       "warehouseCreate",
-      { warehouseName, shortName, address },
+      { warehouseName, shortName, type, address },
       (err, res) => {
         if (err) {
           alert(err.reason);
@@ -61,6 +62,10 @@ Template.warehouses.events({
         }
       }
     );
+
+    target.find(".js-warehouse-name").value = "";
+    target.find(".js-warehouse-short-name").value = "";
+    target.find(".js-address").value = "";
   },
   "click .js-remove-warehouse"(event, target) {
     console.log(this._id);

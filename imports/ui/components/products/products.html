@@ -68,11 +68,11 @@
                 </select>
                 <div class="form-group">
                     <label class="col-form-label">Sales Price</label>
-                    <input type="text" class="form-control js-productSalesPrice" required>
+                    <input type="text" class="form-control js-productSalesPrice" placeholder="0.00" required>
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Cost</label>
-                  <input type="text" class="form-control js-productCost" required>
+                  <input type="text" class="form-control js-productCost" placeholder="0.00" required>
                 </div>
                 <label class="col-form-label">Product Category</label>
                 <select class="form-control js-productCategory">
@@ -120,7 +120,7 @@
     <div class="row">
       {{#if Template.subscriptionsReady}} 
         <div class="col-md-10">
-             {{#unless isEditing "productName"}} <h1><u class="js-edit-productName"><b>{{product.productName}}</b></u></h1>{{else}} {{> fieldUpdate type="text" doc=this key="productName" label="Product Name" value=product.productName server="productUpdate"}}
+             {{#unless isEditing "productName"}} <h1><u class="js-edit-productName"><b>{{product.productName}}</b></u>[Inventory Quantity: {{product.inventoryQuantity}}]</h1>{{else}} {{> fieldUpdate type="text" doc=this key="productName" label="Product Name" value=product.productName server="productUpdate"}}
                  {{/unless}}
             
         </div>

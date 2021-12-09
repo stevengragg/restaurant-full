@@ -22,14 +22,16 @@ Meteor.methods({
 
   warehouseCreate(data) {
     console.log("warehouseCreate: started", data);
-    // check(data.warehouseName, String);
-    // check(data.shortName, String);
-    // check(data.address, String);
+    check(data.warehouseName, String);
+    check(data.shortName, String);
+    check(data.address, String);
+    check(data.type, String);
 
     const result = Warehouses.insert({
       warehouseName: data.warehouseName,
       shortName: data.shortName,
       address: data.address,
+      type: data.type,
     });
     console.log("warehouseCreate: ended", { result });
     return {

@@ -25,12 +25,12 @@ Meteor.methods({
 
   vendorCreate(data) {
     console.log("vendorCreate: started", data);
-    // check(data.name, String);
-    // check(data.type, String);
-    // check(data.address, String);
-    // check(data.mobile, String);
-    // check(data.email, String);
-    // check(data.internalNotes, String);
+    check(data.name, String);
+    check(data.type, String);
+    check(data.address, String);
+    check(data.mobile, String);
+    check(data.email, String);
+    check(data.internalNotes, String);
 
     const result = Vendors.insert({
       name: data.name,

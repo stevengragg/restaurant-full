@@ -216,3 +216,15 @@ Template.product.helpers({
     return productUOM;
   },
 });
+
+Template.product.onDestroyed(function () {
+  Session.set("editingproductName", false);
+  Session.set("editingproductType", false);
+  Session.set("editingproductSalesPricee", false);
+  Session.set("editingproductCost", false);
+  Session.set("editingproductCategory", false);
+  Session.set("editinginternalReference", false);
+  Session.set("editinginternalNotes", false);
+  Session.set("editingproductUOM", false);
+  Session.set("editingproductVolume", false);
+});

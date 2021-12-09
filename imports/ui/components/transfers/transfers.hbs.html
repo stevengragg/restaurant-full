@@ -1,0 +1,155 @@
+<template name="transfers">
+  <div class="row">
+    <div class="col-md-9">
+      <h1 class="mb-3">Transfers</h1>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-primary js-create-transfer">Create</button>
+    </div>
+    <div class="col-md-12 mt-5">
+      <div class="d-flex flex-wrap">
+        {{#if Template.subscriptionsReady}} {{#each transfers}}
+        <div class="p-2 js-view-product touch">
+          <div
+            class="card mb-3 text-wrap scroll-style overflow-auto"
+            style="width: 300px; height: 300px"
+          >
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img
+                  src="/icons/exchange.png"
+                  class="img-thumbnail"
+                  alt="Transfer"
+                />
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title text">{{transferCode}}</h5>
+                  <small>
+                    <!-- <p class="card-text">Product Type: <b>{{productType}}</b></p>
+                                <p class="card-text">Product Category: <b>{{productCategory}}</b></p>
+                                <p class="card-text">Created By: <b>{{getUser createdBy}}</b></p>
+                                <p class="card-text">Created At: <b>{{fromNow createdAt}}</b></p> -->
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{else}}
+        <h3 class="p-5">No Transfers ...</h3>
+        {{/each}} {{else}} {{> contextLoading}} {{/if}}
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="transferModal"
+    tabindex="-1"
+    aria-labelledby="transferModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create Draft</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <form>
+                <label class="col-form-label">Operation Type</label>
+                <select class="form-control js-operationType">
+                  <option value="Receipts">Receipts</option>
+                  <option value="Internal Delivery">Internal Delivery</option>
+                </select>
+
+                {{#if isReceipt}}
+                <label class="col-form-label">Receive From</label>
+                <select class="form-control js-receiveFrom">
+                  {{#each vendors}}
+                  <option value="{{_id}}">{{name}}</option>
+                  {{/each}}
+                </select>
+                <label class="col-form-label">Destination Location</label>
+                <select class="form-control js-destinationLocation">
+                  {{#each warehouses}}
+                  <option value="{{_id}}">{{warehouseName}}</option>
+                  {{/each}}
+                </select>
+                {{/if}} {{#if isInternalDelivery}}
+                <label class="col-form-label">Deliver to</label>
+                <select class="form-control js-deliveryTo">
+                  {{#each deliverTo}}
+                  <option value="{{_id}}">{{warehouseName}}</option>
+                  {{/each}}
+                </select>
+                <label class="col-form-label">Source Location</label>
+                <select class="form-control js-sourceLocation">
+                  {{#each warehouses}}
+                  <option value="{{_id}}">{{warehouseName}}</option>
+                  {{/each}}
+                </select>
+                {{/if}}
+
+                <label class="col-form-label">Product To Process</label>
+                <select class="form-control js-productId">
+                  {{#each products}}
+                  <option value="{{_id}}">{{productName}}</option>
+                  {{/each}}
+                </select>
+                <div class="form-group">
+                  <label class="col-form-label">Demand</label>
+                  <input
+                    type="text"
+                    class="form-control js-demand"
+                    placeholder="0.00"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Source Document</label>
+                  <input
+                    type="text"
+                    class="form-control js-sourceDocument"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Internal Notes</label>
+                  <textarea
+                    class="form-control js-internalNotes"
+                    rows="3"
+                  ></textarea>
+                </div>
+                <br />
+                <br />
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Discard
+          </button>
+          <button type="button" class="btn btn-primary js-create-transfer">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="transfer">
+  <h1>Transfer</h1>
+</template>
