@@ -8,13 +8,29 @@ const SEED_PASSWORD = "wiggler2021!";
 
 // Seed Account creation
 createSeedAccount = () => {
-  data = {
+  const data = {
     email: SEED_EMAIL,
     password: SEED_PASSWORD,
     firstName: "Katherine",
     lastName: "Gragg",
+    role: "admin"
   };
-  Meteor.call("userCreate", data, (err) => err && console.log(err.reason));
+  const userId = Accounts.createUser({
+    email: data.email,
+    password: data.password,
+    profile: {
+      firstName: data.firstName,
+      lastName: data.lastName
+    }
+  });
+  let userRoles = Roles.getRolesForUser(userId);
+  if (userRoles.length == 0) {
+    Roles.createRole(data.role, { unlessExists: true });
+    Roles.addUsersToRoles(userId, data.role);
+  }
+  const userUpdated = Meteor.users.update({ _id: data.userId }, { $set: { "profile.role": data.role } });
+
+  // Meteor.call("userCreate", data, (err) => err && console.log(err.reason));
 };
 
 Meteor.startup(() => {

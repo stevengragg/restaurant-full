@@ -4,18 +4,18 @@
 Meteor.users.allow({
   insert: () => false,
   update: () => false,
-  remove: () => false,
+  remove: () => false
 });
 
 Meteor.users.deny({
   insert: () => true,
   update: () => true,
-  remove: () => true,
+  remove: () => true
 });
 
 const notloggedIn = {
   title: "not-logged-in",
-  message: "Please sign in ..",
+  message: "Please sign in .."
 };
 
 Meteor.methods({
@@ -39,8 +39,8 @@ Meteor.methods({
       password: data.password,
       profile: {
         firstName: data.firstName,
-        lastName: data.lastName,
-      },
+        lastName: data.lastName
+      }
     });
     if (userId) {
       // Add Role to the user
@@ -49,7 +49,7 @@ Meteor.methods({
     console.log("userCreate: ended", { userId });
     return {
       success: userId ? true : false,
-      userId,
+      userId
     };
   },
 
@@ -67,10 +67,7 @@ Meteor.methods({
       Roles.createRole(data.role, { unlessExists: true });
       Roles.addUsersToRoles(data.userId, data.role);
     }
-    const userUpdated = Meteor.users.update(
-      { _id: data.userId },
-      { $set: { "profile.role": data.role } }
-    );
+    const userUpdated = Meteor.users.update({ _id: data.userId }, { $set: { "profile.role": data.role } });
     console.log("userAddRole: ended", { userId: data.userId, userUpdated });
   },
 
@@ -82,5 +79,5 @@ Meteor.methods({
     check(data.userId, String);
     const userRemoved = Meteor.users.remove({ _id: data.userId });
     console.log("userRemove: ended", { userId: data.userId, userRemoved });
-  },
+  }
 });
