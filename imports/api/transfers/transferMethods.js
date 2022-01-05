@@ -32,6 +32,7 @@ Meteor.methods({
       createdAt: new Date().toISOString(),
       lastUpdated: new Date().toISOString(),
       approvedBy: "",
+      isValidated: false,
       createdBy: user,
     });
 

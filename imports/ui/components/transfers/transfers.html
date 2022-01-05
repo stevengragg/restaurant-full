@@ -8,31 +8,36 @@
     </div>
     <div class="col-md-12 mt-5">
       <div class="d-flex flex-wrap">
-        {{#if Template.subscriptionsReady}} {{#each transfers}}
-        <div class="p-2 js-view-transfer touch">
-          <div class="card mb-3 text-wrap scroll-style overflow-auto" style="width: 300px; height: 300px">
+        {{#if Template.subscriptionsReady}} 
+          {{#each transfers}}
+          <div class="p-2 js-view-transfer touch">
+            <div class="card mb-3 text-wrap scroll-style overflow-auto" style="width: 300px; height: 300px">
 
-            <div class="row no-gutters">
-              <div class="col-md-4">
-                <img src="/icons/exchange.png" class="img-thumbnail" alt="Transfer" />
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title text">{{transferCode}}</h5>
-                  <small>
-                    <!-- <p class="card-text">Product Type: <b>{{productType}}</b></p>
-                                <p class="card-text">Product Category: <b>{{productCategory}}</b></p>
-                                <p class="card-text">Created By: <b>{{getUser createdBy}}</b></p>
-                                <p class="card-text">Created At: <b>{{fromNow createdAt}}</b></p> -->
-                  </small>
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img src="/icons/exchange.png" class="img-thumbnail" alt="Transfer" />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title text">{{transferCode}}</h5>
+                    <small>
+                      <p class="card-text">Operation Type: <b>{{operationType}}</b></p>
+                      <p class="card-text">Receive From: <b>{{getReceiveFrom receiveFrom}}</b></p>
+                      <p class="card-text">Destination Location: <b>{{getLocation destinationLocation}}</b></p>
+                      <p class="card-text">Created By: <b>{{getUser createdBy}}</b></p>
+                      <p class="card-text">Created At: <b>{{fromNow createdAt}}</b></p>
+                    </small>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        {{else}}
-        <h3 class="p-5">No Transfers ...</h3>
-        {{/each}} {{else}} {{> contextLoading}} {{/if}}
+          {{else}}
+          <h3 class="p-5">No Transfers ...</h3>
+          {{/each}} 
+        {{else}} 
+          {{> contextLoading}} 
+        {{/if}}
       </div>
     </div>
   </div>
