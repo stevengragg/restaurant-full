@@ -61,9 +61,6 @@ Template.products.helpers({
   },
 });
 Template.products.events({
-  "click .js-redirect-create-product-route"() {
-    $("#productModal").modal("show");
-  },
   "click .js-create-product"(event, target) {
     event.preventDefault();
     const productType = target.find(".js-productType").value;

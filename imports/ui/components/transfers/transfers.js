@@ -46,9 +46,6 @@ Template.transfers.helpers({
 });
 
 Template.transfers.events({
-  "click .js-create-transfer-toggle-modal"() {
-    $("#transferModal").modal("show");
-  },
   "change .js-operationType"(e, instance) {
     const operationType = e.currentTarget.value;
     if (operationType === "Receipts") {

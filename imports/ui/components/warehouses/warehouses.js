@@ -36,7 +36,6 @@ Template.warehouses.helpers({
 Template.warehouses.events({
   "click .js-open-create-warehouse-modal"(event, instance) {
     instance.isViewingWarehouse.set({ bool: false, warehouseId: "" });
-    $("#warehouseModal").modal("show");
   },
   "click .js-create-warehouse-contact"(event, target) {
     event.preventDefault();

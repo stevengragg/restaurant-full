@@ -3,12 +3,12 @@ const ise = "Internal Server Error";
 const roles = [
   {
     text: "Staff",
-    role: "staff",
+    role: "staff"
   },
   {
     text: "Admin",
-    role: "admin",
-  },
+    role: "admin"
+  }
 ];
 
 Template.users.onCreated(function () {
@@ -33,7 +33,7 @@ Template.users.helpers({
         return {
           _id: user._id,
           email: user.emails[0].address,
-          role: user.profile.role,
+          role: user.profile.role
         };
       });
   },
@@ -54,7 +54,7 @@ Template.users.helpers({
             _id: user._id,
             email: user.emails[0].address,
             role: user.profile.role,
-            name: `${user.profile.firstName} ${user.profile.lastName}`,
+            name: `${user.profile.firstName} ${user.profile.lastName}`
           };
         })
     );
@@ -66,16 +66,16 @@ Template.users.helpers({
           _id: user._id,
           email: user.emails[0].address,
           role: user.profile.role,
-          name: `${user.profile.firstName} ${user.profile.lastName}`,
+          name: `${user.profile.firstName} ${user.profile.lastName}`
         };
       });
-  },
+  }
 });
 
 Template.users.events({
   "click .js-open-create-user-modal"(event, instance) {
+    console.log("clicked");
     instance.isViewingUser.set({ bool: false, userId: "" });
-    $("#usersModal").modal("show");
   },
   "click .js-create-user"(event, target) {
     event.preventDefault();
@@ -86,22 +86,18 @@ Template.users.events({
     const email = target.find(".js-email").value;
     const password = target.find(".js-password").value;
     console.log("userObj", { role, firstName, lastName, email, password });
-    Meteor.call(
-      "userCreate",
-      { role, firstName, lastName, email, password },
-      (err, res) => {
-        if (err) {
-          alert(err.reason);
-          return;
-        }
-        if (!res.success) {
-          alert(ise);
-          return;
-        } else {
-          $("#usersModal").modal("hide");
-        }
+    Meteor.call("userCreate", { role, firstName, lastName, email, password }, (err, res) => {
+      if (err) {
+        alert(err.reason);
+        return;
       }
-    );
+      if (!res.success) {
+        alert(ise);
+        return;
+      } else {
+        $("#usersModal").modal("hide");
+      }
+    });
     target.find(".js-firstName").value = "";
     target.find(".js-lastName").value = "";
     target.find(".js-email").value = "";
@@ -120,7 +116,7 @@ Template.users.events({
     console.log(this._id);
     instance.isViewingUser.set({ bool: true, userId: this._id });
     $("#usersModal").modal("show");
-  },
+  }
 });
 
 //Reference

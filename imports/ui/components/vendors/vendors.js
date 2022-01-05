@@ -45,7 +45,6 @@ Template.vendors.helpers({
 Template.vendors.events({
   "click .js-open-create-vendor-modal"(event, instance) {
     instance.isViewingVendor.set({ bool: false, vendorId: "" });
-    $("#vendorsModal").modal("show");
   },
   "click .js-create-vendor-contact"(event, target) {
     event.preventDefault();
