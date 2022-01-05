@@ -12,7 +12,7 @@ Template.transfers.onCreated(function () {
   this.isInternalDelivery = new ReactiveVar(false);
   this.autorun(() => {
     this.subscribe("transfer.getTransfers");
-    this.subscribe("product.getProducts");
+    this.subscribe("product.getProducts", Session.get('productFetchLimit'));
     this.subscribe("vendor.getVendors");
     this.subscribe("warehouse.getWarehouses");
   });

@@ -30,7 +30,7 @@ Template.fieldUpdate.helpers({
 
 Template.fieldUpdate.events({
   "click .js-save"(e, instance) {
-    const { doc, key, value, server } = this;
+    const { doc, key, value, server, isNumber } = this;
 
     const val = instance.find(".js-field").value;
     if (val === value || !val) {
@@ -49,7 +49,7 @@ Template.fieldUpdate.events({
     Meteor.call(
       server,
       id,
-      { [key]: val, lastUpdated: new Date().toISOString() },
+      { [key]: isNumber ? Number(val) : val, lastUpdated: new Date().toISOString() },
       (err, res) => {
         if (err) {
           instance.state.set("failed");

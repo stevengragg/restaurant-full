@@ -11,6 +11,9 @@ const productCategory = [
 ];
 const productUOM = [
   "Units",
+  "kg",
+  "g",
+  "mg",
   "Bag",
   "Bucket",
   "Bottle",
@@ -19,13 +22,16 @@ const productUOM = [
   "Case",
   "Carton",
   "Dozen",
-  "Foot",
+  "Ft",
   "Gallon",
+  "Grams",
   "Inches",
   "Kit",
   "Lot",
+  "Liters",
   "Meter",
   "Milimeter",
+  "mL(MiliLiter)",
   "Piece",
   "Pack",
   "Pair",
@@ -34,15 +40,17 @@ const productUOM = [
   "Set",
   "Sachet",
   "Sheet",
-  "Square FT",
+  "Square Ft",
   "Tube",
   "Yard",
 ];
 
+Session.setDefault('productFetchLimit', 20);
+
 Template.products.onCreated(function () {
   console.log("products");
   this.autorun(() => {
-    this.subscribe("product.getProducts");
+    this.subscribe("product.getProducts", Session.get('productFetchLimit'));
   });
 });
 
@@ -113,12 +121,19 @@ Template.products.events({
     target.find(".js-productUOM").value = "";
     target.find(".js-volume").value = "";
   },
-  "click .js-view-product"(e, event) {
+  "click .js-view-product"(e, target) {
     e.preventDefault();
     // TODO: View product
     console.log(this._id);
     FlowRouter.go("product", { _id: this._id });
   },
+  "click .js-load-more-products" (e) {
+    let currentLimit = Session.get("productFetchLimit");
+    const totalProducts = Products.find({}, {fields: { _id: 1}}).count();
+    if(totalProducts < 20) return;
+    currentLimit += 10;
+    Session.set("productFetchLimit", currentLimit);
+  }
 });
 
 Template.product.onCreated(function () {

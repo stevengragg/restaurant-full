@@ -34,10 +34,12 @@
               {{else}}
                   <h3 class="p-5">No Products ...</h3>
               {{/each}}
+              
             {{else}}
                 {{> contextLoading}}
             {{/if}}  
         </div>
+        <button class="btn btn-primary js-load-more-products">Load more ... </button>
     </div>
 </div>
 <!-- Product Modal -->
@@ -145,14 +147,14 @@
             {{#unless isEditing "productSalesPrice"}}
               <p class="js-edit-productSalesPrice">Sales Price: <b>{{product.productSalesPrice}}</b></p>
             {{else}}
-            {{> fieldUpdate type="text" doc=this key="productSalesPrice" label="Sales Price" value=product.productSalesPrice server="productUpdate"}}
+            {{> fieldUpdate type="text" doc=this key="productSalesPrice" label="Sales Price" value=product.productSalesPrice server="productUpdate" isNumber=true}}
             {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
             {{#unless isEditing "productCost"}}
               <p class="js-edit-productCost">Cost: <b>{{product.productCost}}</b></p>
             {{else}}
-            {{> fieldUpdate type="text" doc=this key="productCost" label="Cost" value=product.productCost server="productUpdate"}}
+            {{> fieldUpdate type="text" doc=this key="productCost" label="Cost" value=product.productCost server="productUpdate" isNumber=true}}
             {{/unless}}
           </div>
           <div class="p-2 bg-light mt-2">
@@ -187,7 +189,7 @@
             {{#unless isEditing "productVolume"}}
               <p class="js-edit-productVolume">Volume(per UOM): <b>{{product.productVolume}}</b></p>
             {{else}}
-            {{> fieldUpdate type="text" doc=this key="productVolume" label="Volume(per UOM)" value=product.productVolume server="productUpdate"}}
+            {{> fieldUpdate type="text" doc=this key="productVolume" label="Volume(per UOM)" value=product.productVolume server="productUpdate" isNumber=true}}
             {{/unless}}
           </div>
           <br>

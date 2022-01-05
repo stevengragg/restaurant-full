@@ -1,9 +1,9 @@
 import { Products } from "../../api/database/productsCollection.js";
 
-Meteor.publish("product.getProducts", function () {
+Meteor.publish("product.getProducts", function (limitNumber) {
   const userId = Meteor.userId();
   if (!userId) return this.stop();
-  return Products.find({});
+  return Products.find({}, {limit: limitNumber});
 });
 
 Meteor.publish("product.getProduct", function (productId) {
