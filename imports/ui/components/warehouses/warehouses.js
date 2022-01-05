@@ -80,6 +80,5 @@ Template.warehouses.events({
   "click .js-view-warehouse"(event, instance) {
     console.log(this._id);
     instance.isViewingWarehouse.set({ bool: true, warehouseId: this._id });
-    $("#warehouseModal").modal("show");
   },
 });

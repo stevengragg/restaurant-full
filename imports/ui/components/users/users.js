@@ -115,7 +115,6 @@ Template.users.events({
   "click .js-view-user"(event, instance) {
     console.log(this._id);
     instance.isViewingUser.set({ bool: true, userId: this._id });
-    $("#usersModal").modal("show");
   }
 });
 

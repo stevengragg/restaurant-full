@@ -99,6 +99,5 @@ Template.vendors.events({
   "click .js-view-vendor"(event, instance) {
     console.log(this._id);
     instance.isViewingVendor.set({ bool: true, vendorId: this._id });
-    $("#vendorsModal").modal("show");
   },
 });
