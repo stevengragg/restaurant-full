@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Warehouses } from "../../api/database/wareHouseCollection.js";
 import { Vendors } from "../../api/database/vendorsCollection.js";
+import { Products } from "../../api/database/productsCollection";
 Template.registerHelper("get", (obj, propName) => obj && obj[propName]);
 Template.registerHelper("eq", (a, b) => a === b);
 Template.registerHelper(
@@ -60,7 +61,15 @@ Template.registerHelper("getLocation", (docId) => {
 
 // Vendors
 
-Template.registerHelper("getReceiveFrom", (docId) => {
+Template.registerHelper("getVendor", (docId) => {
   const vendor = Vendors.findOne({ _id: docId },{ fields: { name: 1 }});
   return vendor.name || "";
+}) 
+
+
+//Products
+
+Template.registerHelper("getProduct", (docId) => {
+  const product = Products.findOne({ _id: docId },{ fields: { productName: 1 }});
+  return product.productName || "";
 }) 

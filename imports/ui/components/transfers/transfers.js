@@ -12,9 +12,10 @@ Template.transfers.onCreated(function () {
   this.isInternalDelivery = new ReactiveVar(false);
   this.autorun(() => {
     this.subscribe("transfer.getTransfers");
-    this.subscribe("product.getProducts", Session.get('productFetchLimit'));
     this.subscribe("vendor.getVendors");
     this.subscribe("warehouse.getWarehouses");
+    this.subscribe("user.systemUsers");
+    this.subscribe("product.getProducts", false);
   });
 });
 
@@ -41,7 +42,7 @@ Template.transfers.helpers({
     );
   },
   products() {
-    return Products.find();
+    return Products.find({},{fields: { productName: 1}});
   },
 });
 
@@ -141,94 +142,127 @@ Template.transfers.events({
 });
 
 Template.transfer.onCreated(function () {
-  // Session.set("editingproductName", false);
-  // Session.set("editingproductType", false);
-  // Session.set("editingproductSalesPricee", false);
-  // Session.set("editingproductCost", false);
-  // Session.set("editingproductCategory", false);
-  // Session.set("editinginternalReference", false);
-  // Session.set("editinginternalNotes", false);
-  // Session.set("editingproductUOM", false);
-  // Session.set("editingproductVolume", false);
+  Session.set("status", "")
+  Session.set("editingproductId", false);
+  Session.set("editingdemand", false);
+  Session.set("editingoperationType", false);
+  Session.set("editingreceiveFrom", false);
+  Session.set("editingdeliveryTo", false);
+  Session.set("editingdestinationLocation", false);
+  Session.set("editingsourceLocation", false);
+  Session.set("editingsourceDocument", false);
+  Session.set("editinginternalNotes", false);
   // this.editName = new ReactiveVar(false);
-  // this.getTransferId = () => FlowRouter.getParam("_id");
-  // this.autorun(() => {
-  //   const getProductReady = this.subscribe(
-  //     "transfer.getTransfer",
-  //     this.getTransferId()
-  //   );
-  //   if (getProductReady.ready()) {
-  //     const product = Transfers.findOne(
-  //       { _id: this.getTransferId() },
-  //       { fields: { _id: 1 } }
-  //     );
-  //     if (!product) {
-  //       alert("Transfer entry not found");
-  //       FlowRouter.go("transfers");
-  //     }
-  //   }
-  // });
+  this.getTransferId = () => FlowRouter.getParam("_id");
+  this.autorun(() => {
+    this.subscribe("vendor.getVendors");
+    this.subscribe("warehouse.getWarehouses");
+    this.subscribe("user.systemUsers");
+    this.subscribe("product.getProducts", false);
+    const getTransferReady = this.subscribe(
+      "transfer.getTransfer",
+      this.getTransferId()
+    );
+    if (getTransferReady.ready()) {
+      const transfer = Transfers.findOne(
+        { _id: this.getTransferId() },
+        { fields: { _id: 1, status: 1 } }
+      );
+      if (!transfer) {
+        alert("Transfer entry not found");
+        FlowRouter.go("transfers");
+      }
+      Session.set("status", transfer.status);
+    }
+  });
 });
 
 Template.transfer.events({
-  // "click .js-go-back-products-route"() {
-  //   FlowRouter.go("transfers");
-  // },
-  // "click .js-edit-productName"(e, instance) {
-  //   Session.set("editingproductName", true);
-  // },
-  // "click .js-edit-productType"(e, instance) {
-  //   Session.set("editingproductType", true);
-  // },
-  // "click .js-edit-productSalesPrice"(e, instance) {
-  //   Session.set("editingproductSalesPrice", true);
-  // },
-  // "click .js-edit-productCost"(e, instance) {
-  //   Session.set("editingproductCost", true);
-  // },
-  // "click .js-edit-productCategory"(e, instance) {
-  //   Session.set("editingproductCategory", true);
-  // },
-  // "click .js-edit-internalReference"(e, instance) {
-  //   Session.set("editinginternalReference", true);
-  // },
-  // "click .js-edit-internalNotes"(e, instance) {
-  //   Session.set("editinginternalNotes", true);
-  // },
-  // "click .js-edit-productUOM"(e, instance) {
-  //   Session.set("editingproductUOM", true);
-  // },
-  // "click .js-edit-productVolume"(e, instance) {
-  //   Session.set("editingproductVolume", true);
-  // },
+  "click .js-discard"(e,instance) {
+    const answer = confirm(
+    "Are you sure that you want to remove this transfer? Changes done will be removed."
+    );
+    if(answer){
+      Meteor.call("transferDiscard", { transferId:  instance.getTransferId() });
+      FlowRouter.go("transfer");
+    }
+    
+  },
+  "click .js-go-back-transfers"() {
+    FlowRouter.go("transfers");
+  },
+  "click .js-validate-transfer" (e, instance) {
+    //validate the transfer entry
+    Meteor.call("transferValidate", { transferId:  instance.getTransferId() }, (err) => {
+      if (err) {
+        alert(err.reason);
+        return;
+      }
+    });
+  },
+  "click .js-reject-transfer" (e, instance) {
+    // reject transfer entry
+    Meteor.call('transferUpdate', instance.getTransferId(), { status: "rejected"})
+  },
+  "click .js-draft-transfer" (e, instance) {
+    //draft the transfer entry
+    Meteor.call('transferUpdate', instance.getTransferId(), { status: "draft"})
+  },
+  "click .js-ready-transfer" (e, instance) {
+    // ready transfer entry
+    Meteor.call('transferUpdate', instance.getTransferId(), { status: "ready"})
+  },
+  "click .js-edit-productId"() {
+    Session.set("editingproductId", true);
+  },
+  "click .js-edit-demand"(e, instance) {
+    Session.set("editingdemand", true);
+  },
+  "click .js-edit-operationType"(e, instance) {
+    Session.set("editingoperationType", true);
+  },
+  "click .js-edit-receiveFrom"(e, instance) {
+    Session.set("editingreceiveFrom", true);
+  },
+  "click .js-edit-deliveryTo"(e, instance) {
+    Session.set("editingdeliveryTo", true);
+  },
+  "click .js-edit-destinationLocation"(e, instance) {
+    Session.set("editingdestinationLocation", true);
+  },
+  "click .js-edit-sourceLocation"(e, instance) {
+    Session.set("editingsourceLocation", true);
+  },
+  "click .js-edit-sourceDocument"(e, instance) {
+    Session.set("editingsourceDocument", true);
+  },
+  "click .js-edit-internalNotes"(e, instance) {
+    Session.set("editinginternalNotes", true);
+  },
 });
 
 Template.transfer.helpers({
-  // product() {
-  //   return Products.findOne({ _id: Template.instance().getProductId() });
-  // },
-  // isEditing(field) {
-  //   return Session.get(`editing${field}`);
-  // },
-  // productTypeHelper() {
-  //   return productTypes;
-  // },
-  // productCategoryHelper() {
-  //   return productCategory;
-  // },
-  // productUOMHelper() {
-  //   return productUOM;
-  // },
+  transfer() {
+    return Transfers.findOne({ _id: Template.instance().getTransferId() });
+  },
+  isEditing(field) {
+    return Session.get(`editing${field}`);
+  },
+  operationTypeHelper() {
+    const operationType = ["Receipts", "Internal Delivery"];
+    return operationType;
+  },
 });
 
 Template.transfer.onDestroyed(function () {
-  // Session.set("editingproductName", false);
-  // Session.set("editingproductType", false);
-  // Session.set("editingproductSalesPricee", false);
-  // Session.set("editingproductCost", false);
-  // Session.set("editingproductCategory", false);
-  // Session.set("editinginternalReference", false);
-  // Session.set("editinginternalNotes", false);
-  // Session.set("editingproductUOM", false);
-  // Session.set("editingproductVolume", false);
+  Session.set("status", "");
+  Session.set("editingproductId", false);
+  Session.set("editingdemand", false);
+  Session.set("editingoperationType", false);
+  Session.set("editingreceiveFrom", false);
+  Session.set("editingdeliveryTo", false);
+  Session.set("editingdestinationLocation", false);
+  Session.set("editingsourceLocation", false);
+  Session.set("editingsourceDocument", false);
+  Session.set("editinginternalNotes", false);
 });

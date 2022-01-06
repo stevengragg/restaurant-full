@@ -45,11 +45,12 @@ const productUOM = [
   "Yard",
 ];
 
-Session.setDefault('productFetchLimit', 20);
+Session.setDefault('productFetchLimit', 6);
 
 Template.products.onCreated(function () {
   console.log("products");
   this.autorun(() => {
+    this.subscribe("user.systemUsers");
     this.subscribe("product.getProducts", Session.get('productFetchLimit'));
   });
 });
@@ -130,8 +131,8 @@ Template.products.events({
   "click .js-load-more-products" (e) {
     let currentLimit = Session.get("productFetchLimit");
     const totalProducts = Products.find({}, {fields: { _id: 1}}).count();
-    if(totalProducts < 20) return;
-    currentLimit += 10;
+    if(totalProducts < 6) return;
+    currentLimit += 6 ;
     Session.set("productFetchLimit", currentLimit);
   }
 });
@@ -139,7 +140,7 @@ Template.products.events({
 Template.product.onCreated(function () {
   Session.set("editingproductName", false);
   Session.set("editingproductType", false);
-  Session.set("editingproductSalesPricee", false);
+  Session.set("editingproductSalesPrice", false);
   Session.set("editingproductCost", false);
   Session.set("editingproductCategory", false);
   Session.set("editinginternalReference", false);
@@ -150,6 +151,7 @@ Template.product.onCreated(function () {
   this.editName = new ReactiveVar(false);
   this.getProductId = () => FlowRouter.getParam("_id");
   this.autorun(() => {
+    this.subscribe("user.systemUsers");
     const getProductReady = this.subscribe(
       "product.getProduct",
       this.getProductId()
@@ -232,7 +234,7 @@ Template.product.helpers({
 Template.product.onDestroyed(function () {
   Session.set("editingproductName", false);
   Session.set("editingproductType", false);
-  Session.set("editingproductSalesPricee", false);
+  Session.set("editingproductSalesPrice", false);
   Session.set("editingproductCost", false);
   Session.set("editingproductCategory", false);
   Session.set("editinginternalReference", false);

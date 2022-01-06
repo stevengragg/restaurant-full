@@ -1,6 +1,7 @@
 <template name="fieldUpdate">
     <div class="form-group {{#if state}}disabled{{/if}} touch">
       {{#if dom type "input"}}
+        <label>{{label}}</label>
           <input type="text" class="form-control js-field" value={{value}} placeholder="{{label}}" disabled="{{#if state}}true{{/if}}">
       {{/if}}
       {{#if dom type "textarea"}}
@@ -12,6 +13,38 @@
           <select class="form-control js-field" disabled="{{#if state}}true{{/if}}">
             {{#each option in options}}
               <option value="{{option}}" selected={{eq value option}}>{{option}}</option>
+            {{/each}}
+          </select>
+      {{/if}}
+      {{#if eq type "select-product"}}
+          <label>{{label}}</label>
+          <select class="form-control js-field" disabled="{{#if state}}true{{/if}}">
+            {{#each products}}
+            <option value="{{_id}}">{{productName}}</option>
+            {{/each}}
+          </select>
+      {{/if}}
+      {{#if eq type "select-vendor"}}
+          <label>{{label}}</label>
+          <select class="form-control js-field" disabled="{{#if state}}true{{/if}}">
+            {{#each vendors}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/each}}
+          </select>
+      {{/if}}
+      {{#if eq type "select-location"}}
+          <label>{{label}}</label>
+          <select class="form-control js-field" disabled="{{#if state}}true{{/if}}">
+            {{#each warehouses}}
+            <option value="{{_id}}">{{warehouseName}}</option>
+            {{/each}}
+          </select>
+      {{/if}}
+      {{#if eq type "select-location2"}}
+          <label>{{label}}</label>
+          <select class="form-control js-field" disabled="{{#if state}}true{{/if}}">
+            {{#each deliverTo}}
+            <option value="{{_id}}">{{warehouseName}}</option>
             {{/each}}
           </select>
       {{/if}}

@@ -11,7 +11,7 @@
         {{#if Template.subscriptionsReady}} 
           {{#each transfers}}
           <div class="p-2 js-view-transfer touch">
-            <div class="card mb-3 text-wrap scroll-style overflow-auto" style="width: 300px; height: 300px">
+            <div class="card mb-3 text-wrap scroll-style overflow-auto shadow p-3 bg-white rounded" style="width: 300px; height: 300px">
 
               <div class="row no-gutters">
                 <div class="col-md-4">
@@ -19,11 +19,11 @@
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h5 class="card-title text">{{transferCode}}</h5>
+                    <h5 class="card-title text">{{transferCode}}</h5>{{#if eq status "draft"}}<span class="badge badge-pill badge-info">Draft</span>{{/if}}{{#if eq status "ready"}}<span class="badge badge-pill badge-primary">Ready</span>{{/if}}{{#if eq status "validated"}}<span class="badge badge-pill badge-success">Validated</span>{{/if}}{{#if eq status "rejected"}}<span class="badge badge-pill badge-danger">Rejected</span>{{/if}}
                     <small>
                       <p class="card-text">Operation Type: <b>{{operationType}}</b></p>
-                      <p class="card-text">Receive From: <b>{{getReceiveFrom receiveFrom}}</b></p>
-                      <p class="card-text">Destination Location: <b>{{getLocation destinationLocation}}</b></p>
+                      <p class="card-text">{{#if eq operationType "Receipts"}}Receive From: <b>{{getVendor receiveFrom}}</b>{{else}}Delivery To: <b>{{getLocation deliveryTo}}</b>{{/if}} </p>
+                      <p class="card-text">{{#if eq operationType "Receipts"}}Destination Location: <b>{{getLocation destinationLocation}}</b>{{else}}Source Location: <b>{{getLocation sourceLocation}}</b>{{/if}} </p>
                       <p class="card-text">Created By: <b>{{getUser createdBy}}</b></p>
                       <p class="card-text">Created At: <b>{{fromNow createdAt}}</b></p>
                     </small>
@@ -75,7 +75,8 @@
                   <option value="{{_id}}">{{warehouseName}}</option>
                   {{/each}}
                 </select>
-                {{/if}} {{#if isInternalDelivery}}
+                {{/if}} 
+                {{#if isInternalDelivery}}
                 <label class="col-form-label">Deliver to</label>
                 <select class="form-control js-deliveryTo">
                   {{#each deliverTo}}
@@ -128,5 +129,142 @@
 </template>
 
 <template name="transfer">
-  <h1>Transfer</h1>
+  <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+    {{#if Template.subscriptionsReady}} 
+    <div class="col-md-7">
+      <h1>Transfer <span class="text-success">{{transfer.transferCode}}</span> </h1> {{#if eq transfer.status "draft"}}<span class="badge badge-pill badge-info">Draft</span>{{/if}}{{#if eq transfer.status "ready"}}<span class="badge badge-pill badge-primary">Ready</span>{{/if}}{{#if eq transfer.status "validated"}}<span class="badge badge-pill badge-success">Validated</span>{{/if}}{{#if eq transfer.status "rejected"}}<span class="badge badge-pill badge-danger">Rejected</span>{{/if}}
+    </div>
+    <div class="col-md-5">
+      {{#if isAdmin}}
+        {{#if eq transfer.status "ready"}}
+          {{#unless or (eq transfer.status "validated") (eq transfer.status "rejected")}}
+          <button class="btn btn-danger js-reject-transfer">Reject</button>
+          <button class="btn btn-primary js-validate-transfer">Validate</button>
+          {{/unless}}
+        {{/if}}
+      {{/if}}
+      {{#if eq transfer.status "draft"}} <button class="btn btn-info js-ready-transfer">Ready</button> {{/if}}
+      {{#if eq transfer.status "ready"}} <button class="btn btn-dark js-draft-transfer">Not Ready</button> {{/if}}
+      <button class="btn btn-secondary js-go-back-transfers">Back</button>
+    </div>
+    <div class="col-md-8 mt-5">
+      <h5 class="d-flex"> <img src="/icons/user.png" alt="Wiggler logo" class="user-temp"> <div class="pl-2 mt-1">{{getUser transfer.createdBy}}(creator)</div> {{#if eq transfer.status "validated"}}<img src="/icons/user.png" alt="Wiggler logo" class="user-temp ml-2"> <div class="pl-2 mt-1">{{getUser transfer.approvedBy}}(approver)</div> {{/if}}</h5>
+      <div class="d-flex pr-5">
+        <div class="p-3 mt-3"><i><small>Last updated: {{fromNow transfer.lastUpdated}}</small></i></div>
+        <div class="p-3 mt-3"><i><small>Created At: {{fromNow transfer.createdAt}}</small></i></div>
+      </div>  
+      {{#if eq transfer.status "draft"}}
+        <div class="p-2 bg-light">
+          {{#unless isEditing "productId"}}
+          <p class="js-edit-productId">Product: <b>{{getProduct transfer.productId}}</b></p>
+          {{else}}    
+          {{> fieldUpdate type="select-product" doc=this key="productId" label="Product" value=transfer.productId server="transferUpdate"}}
+          {{/unless}}
+        </div>
+        <div class="p-2 bg-light">
+          {{#unless isEditing "demand"}}
+              <p class="js-edit-demand">Demand: <b>{{transfer.demand}}</b></p>
+          {{else}}
+            {{> fieldUpdate type="text" doc=this key="demand" label="Demand" value=transfer.demand server="transferUpdate" isNumber=true}}
+          {{/unless}}
+        </div>
+        <div class="p-2 bg-light">
+          <p>Operation Type: {{transfer.operationType}}</p>
+        </div>
+        <div class="p-2 bg-light">
+          <p>
+            {{#if eq transfer.operationType "Receipts"}}
+              {{#unless isEditing "receiveFrom"}}
+                <p class="js-edit-receiveFrom">Receive From: <b>{{getVendor transfer.receiveFrom}}</b></p>
+              {{else}}
+                {{> fieldUpdate type="select-vendor" doc=this key="receiveFrom" label="Receive From" value=transfer.receiveFrom server="transferUpdate"}}
+              {{/unless}}
+            {{else}}
+              {{#unless isEditing "deliveryTo"}}
+                <p class="js-edit-deliveryTo">Delivery To: <b>{{getLocation transfer.deliveryTo}}</b></p>
+              {{else}}
+                {{> fieldUpdate type="select-location2" doc=this key="deliveryTo" label="Delivery To" value=transfer.deliveryTo server="transferUpdate"}}
+              {{/unless}}
+            {{/if}}
+          </p> 
+        </div>
+        <div class="p-2 bg-light">
+          <p>
+            {{#if eq transfer.operationType "Receipts"}}
+              {{#unless isEditing "destinationLocation"}}
+                <p class="js-edit-destinationLocation">Destination Location: <b>{{getLocation transfer.destinationLocation}}</b></p>
+              {{else}}
+                {{> fieldUpdate type="select-location" doc=this key="destinationLocation" label="Destination Location" value=transfer.destinationLocation server="transferUpdate"}}
+              {{/unless}}
+            {{else}}
+              {{#unless isEditing "sourceLocation"}}
+                <p class="js-edit-sourceLocation">Source Location: <b>{{getLocation transfer.sourceLocation}}</b></p>
+              {{else}}
+                {{> fieldUpdate type="select-location" doc=this key="sourceLocation" label="Source Location" value=transfer.sourceLocation server="transferUpdate"}}
+              {{/unless}}
+            {{/if}}
+          </p> 
+        </div>
+        <div class="p-2 bg-light">
+          {{#unless isEditing "sourceDocument"}}
+            <p class="js-edit-sourceDocument">Source Document: <b>{{transfer.sourceDocument}}</b></p>
+          {{else}}
+            {{> fieldUpdate type="text" doc=this key="sourceDocument" label="Source Document" value=transfer.sourceDocument server="transferUpdate"}}
+          {{/unless}}
+        </div>
+        <div class="p-2 bg-light">
+          {{#unless isEditing "internalNotes"}}
+            <p class="js-edit-internalNotes">Internal Notes: <b>{{transfer.internalNotes}}</b></p>
+          {{else}}
+            {{> fieldUpdate type="textarea" doc=this key="internalNotes" label="Internal Notes" value=transfer.internalNotes server="transferUpdate"}}
+          {{/unless}}
+        </div>
+      {{else}}
+        <div class="p-2 bg-light">
+          <h3>Product: <u><a href="/products/{{transfer.productId}}" target="_blank">{{getProduct transfer.productId}}</a></u> (Counted/Verified: <span class="text-info">{{transfer.done}}</span>)</h3>
+        </div>
+        <div class="p-2 bg-light">
+          <p>Demand: {{transfer.demand}}</p>
+        </div>
+        <div class="p-2 bg-light">
+          <p>Operation Type: {{transfer.operationType}}</p>
+        </div>
+        <div class="p-2 bg-light">
+          <p>{{#if eq transfer.operationType "Receipts"}}Receive From: {{getVendor transfer.receiveFrom}}{{else}}Delivery To: {{getLocation transfer.deliveryTo}}{{/if}}</p> 
+        </div>
+        <div class="p-2 bg-light">
+          <p>{{#if eq transfer.operationType "Receipts"}}Destination Location: {{getLocation transfer.destinationLocation}}{{else}}Source Location: {{getLocation transfer.sourceLocation}}{{/if}}</p> 
+        </div>
+        <div class="p-2 bg-light">
+          <p>Source Document: {{transfer.sourceDocument}}</p>
+        </div>
+        <div class="p-2 bg-light">
+          <p class="text-wrap">Internal Notes: {{transfer.internalNotes}}</p>
+        </div>
+      {{/if}}
+      
+    </div>
+
+    <div class="col-md-4 mt-5">
+      <div class="mb-5">
+        <img src="/icons/exchange.png" class="img-thumbnail w-50 h-50" alt="Product Image">
+      </div>
+      <div class="p-2 bg-light">
+        <h3>Log notes</h3>
+        <br>
+        <br>
+        <br>
+      </div>
+      
+    </div>
+
+    {{else}}
+          {{> contextLoading}}
+      {{/if}} 
+      {{#unless or (eq transfer.status "validated") (eq transfer.status "rejected")}}
+      <div class="mt-5 p-3">
+        <button type="button" class="btn btn-warning js-discard">Discard</button>
+      </div>
+      {{/unless}}
+  </div>
 </template>

@@ -1,6 +1,10 @@
 import "./fieldUpdate.html";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { Products } from "../../api/database/productsCollection.js";
+import { Vendors } from "../../api/database/vendorsCollection.js";
+import { Warehouses } from "../../api/database/wareHouseCollection";
 Template.fieldUpdate.onCreated(function () {
+  this.subscribe("product.getProducts", false);
   this.getId = () => FlowRouter.getParam("_id");
   this.state = new ReactiveVar("");
   this.message = new ReactiveVar("");
@@ -24,6 +28,21 @@ Template.fieldUpdate.helpers({
         comment: "comment",
         select: "select",
       }[type] === elName
+    );
+  },
+  products() {
+    return Products.find({},{fields: { productName: 1}});
+  },
+  vendors() {
+    return Vendors.find({}, { fields: { name: 1 } });
+  },
+  warehouses() {
+    return Warehouses.find({ type: "Stock" }, { fields: { warehouseName: 1 } });
+  },
+  deliverTo() {
+    return Warehouses.find(
+      { type: "Restaurant" },
+      { fields: { warehouseName: 1 } }
     );
   },
 });

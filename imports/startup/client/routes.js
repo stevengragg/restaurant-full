@@ -14,8 +14,7 @@ import "../../ui/components/users/users.js";
 import "../../ui/components/vendors/vendors.js";
 import "../../ui/components/warehouses/warehouses.js";
 // Render templates to Blaze Layout
-const renderRouteName = () =>
-  BlazeLayout.render("wigglerLayout", { main: FlowRouter.getRouteName() });
+const renderRouteName = () => BlazeLayout.render("wigglerLayout", { main: FlowRouter.getRouteName() });
 // Route for Sign in
 FlowRouter.route("/signin", {
   name: "signin",
@@ -98,7 +97,7 @@ route("users"); // Users route
 route("vendors"); // Vendors route
 route("warehouses"); // Warehouses route
 // route('product-category') // Product Category route
-FlowRouter.route("/products/product/:_id", {
+FlowRouter.route("/products/:_id", {
   name: "product",
   action: () => {
     if (!Meteor.userId()) {
@@ -109,7 +108,7 @@ FlowRouter.route("/products/product/:_id", {
   },
 });
 
-FlowRouter.route("/transfers/transfer/:_id", {
+FlowRouter.route("/transfers/:_id", {
   name: "transfer",
   action: () => {
     if (!Meteor.userId()) {

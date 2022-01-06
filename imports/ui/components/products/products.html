@@ -11,7 +11,7 @@
           {{#if Template.subscriptionsReady}} 
               {{#each products}}
               <div class="p-2 js-view-product touch ">
-                <div class="card mb-3 text-wrap scroll-style overflow-auto" style="width: 300px; height: 300px;">
+                <div class="card text-wrap scroll-style overflow-auto shadow p-3 mb-3 bg-white rounded" style="width: 300px; height: 300px;">
                     <div class="row no-gutters">
                       <div class="col-md-4">
                         <img src="/img/productsample.png" class="img-thumbnail" alt="Product">
@@ -119,7 +119,7 @@
 </template>
 
 <template name="product">
-    <div class="row">
+    <div class="row shadow-lg p-3 mb-5 bg-white rounded">
       {{#if Template.subscriptionsReady}} 
         <div class="col-md-10">
              {{#unless isEditing "productName"}} <h1><u class="js-edit-productName"><b>{{product.productName}}</b></u>[Inventory Quantity: {{product.inventoryQuantity}}]</h1>{{else}} {{> fieldUpdate type="text" doc=this key="productName" label="Product Name" value=product.productName server="productUpdate"}}
