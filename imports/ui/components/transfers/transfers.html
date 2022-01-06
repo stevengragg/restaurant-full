@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h5 class="card-title text">{{transferCode}}</h5>{{#if eq status "draft"}}<span class="badge badge-pill badge-info">Draft</span>{{/if}}{{#if eq status "ready"}}<span class="badge badge-pill badge-primary">Ready</span>{{/if}}{{#if eq status "validated"}}<span class="badge badge-pill badge-success">Validated</span>{{/if}}{{#if eq status "rejected"}}<span class="badge badge-pill badge-danger">Rejected</span>{{/if}}
+                    <h6 class="card-title text">{{transferCode}}</h6>{{#if eq status "draft"}}<span class="badge badge-pill badge-info">Draft</span>{{/if}}{{#if eq status "ready"}}<span class="badge badge-pill badge-primary">Ready</span>{{/if}}{{#if eq status "validated"}}<span class="badge badge-pill badge-success">Validated</span>{{/if}}{{#if eq status "rejected"}}<span class="badge badge-pill badge-danger">Rejected</span>{{/if}}
                     <small>
                       <p class="card-text">Operation Type: <b>{{operationType}}</b></p>
                       <p class="card-text">{{#if eq operationType "Receipts"}}Receive From: <b>{{getVendor receiveFrom}}</b>{{else}}Delivery To: <b>{{getLocation deliveryTo}}</b>{{/if}} </p>

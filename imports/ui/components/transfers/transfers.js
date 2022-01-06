@@ -5,7 +5,17 @@ import { Transfers } from "../../../api/database/transfersCollection.js";
 import { Vendors } from "../../../api/database/vendorsCollection.js";
 import { Warehouses } from "../../../api/database/wareHouseCollection";
 import { Products } from "../../../api/database/productsCollection";
+function keyGen(keyLength) {
+  var i, key = "", characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+  var charactersLength = characters.length;
+
+  for (i = 0; i < keyLength; i++) {
+      key += characters.substr(Math.floor((Math.random() * charactersLength) + 1), 1);
+  }
+
+  return key;
+}
 Template.transfers.onCreated(function () {
   console.log("transfers");
   this.isReceipt = new ReactiveVar(false);
@@ -91,7 +101,7 @@ Template.transfers.events({
       console.log(shortName);
       countOfReceipts += 1;
       console.log(countOfReceipts);
-      transferCode = `${shortName}/IN/${countOfReceipts}`;
+      transferCode = `${shortName}/IN/${keyGen(5)}`;
     } else if (operationType === "Internal Delivery") {
       let countOfReceipts = Transfers.find({
         operationType,
@@ -106,7 +116,7 @@ Template.transfers.events({
       console.log(shortName);
       countOfReceipts += 1;
       console.log(countOfReceipts);
-      transferCode = `${shortName}/OUT/${countOfReceipts}`;
+      transferCode = `${shortName}/OUT/${keyGen(5)}`;
     }
     console.log(transferCode);
     data.transferCode = transferCode;
