@@ -1,4 +1,5 @@
 import "./products.html";
+import "../log-note/log-note.js";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Products } from "../../../api/database/productsCollection";
 const productTypes = ["Storable Product", "Consumable"];
@@ -45,13 +46,13 @@ const productUOM = [
   "Yard",
 ];
 
-Session.setDefault('productFetchLimit', 6);
+Session.setDefault("productFetchLimit", 6);
 
 Template.products.onCreated(function () {
   console.log("products");
   this.autorun(() => {
     this.subscribe("user.systemUsers");
-    this.subscribe("product.getProducts", Session.get('productFetchLimit'));
+    this.subscribe("product.getProducts", Session.get("productFetchLimit"));
   });
 });
 
@@ -128,13 +129,13 @@ Template.products.events({
     console.log(this._id);
     FlowRouter.go("product", { _id: this._id });
   },
-  "click .js-load-more-products" (e) {
+  "click .js-load-more-products"(e) {
     let currentLimit = Session.get("productFetchLimit");
-    const totalProducts = Products.find({}, {fields: { _id: 1}}).count();
-    if(totalProducts < 6) return;
-    currentLimit += 6 ;
+    const totalProducts = Products.find({}, { fields: { _id: 1 } }).count();
+    if (totalProducts < 6) return;
+    currentLimit += 6;
     Session.set("productFetchLimit", currentLimit);
-  }
+  },
 });
 
 Template.product.onCreated(function () {
